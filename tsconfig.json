@@ -29,6 +29,11 @@
     "scripts/**/*",
     "hardhat.config.ts",
     "test/**/*",
-    "src/test/**/*"
+    "src/test/**/*",
+    "vitest.config.ts",
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "**/*.test.tsx",
+    "**/*.spec.tsx"
   ]
 }
