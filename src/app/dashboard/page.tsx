@@ -214,12 +214,15 @@ export default function DashboardPage() {
               <div className="flex items-center space-x-2">
                 <input
                   type="text"
-                  value={`coffeetip.com/${user.username}`}
+                  value={`${(process.env.NEXT_PUBLIC_BASE_URL || (typeof window !== 'undefined' ? window.location.origin : ''))}/${user.username}`}
                   readOnly
                   className="flex-1 px-4 py-3 border border-gray-300 rounded-xl bg-gray-50 text-gray-600"
                 />
                 <button
-                  onClick={() => navigator.clipboard.writeText(`https://coffeetip.com/${user.username}`)}
+                  onClick={() => {
+                    const base = process.env.NEXT_PUBLIC_BASE_URL || (typeof window !== 'undefined' ? window.location.origin : '');
+                    navigator.clipboard.writeText(`${base}/${user.username}`);
+                  }}
                   className="px-4 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-colors"
                 >
                   Copy

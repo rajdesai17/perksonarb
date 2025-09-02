@@ -261,7 +261,7 @@ export default function CreatePage() {
               </p>
               {username && (
                 <p className="text-sm text-amber-600 mt-2">
-                  Your page will be: coffeetip.com/<strong>{username}</strong>
+                  Your page will be: {(process.env.NEXT_PUBLIC_BASE_URL || (typeof window !== 'undefined' ? window.location.origin : ''))}/<strong>{username}</strong>
                 </p>
               )}
             </div>
