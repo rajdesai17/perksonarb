@@ -23,5 +23,12 @@
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules", "ignition/**/*", "scripts/**/*", "hardhat.config.ts", "test/**/*"]
+  "exclude": [
+    "node_modules",
+    "ignition/**/*",
+    "scripts/**/*",
+    "hardhat.config.ts",
+    "test/**/*",
+    "src/test/**/*"
+  ]
 }

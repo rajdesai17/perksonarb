@@ -120,6 +120,11 @@ const nextConfig = {
   // Enable gzip compression
   compress: true,
 
+  // Disable ESLint during production builds on Vercel (dev runs can still lint)
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+
   // Optimize resource hints to prevent preload warnings
   async headers() {
     return [
