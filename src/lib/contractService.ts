@@ -1,13 +1,11 @@
 import { ethers } from 'ethers';
 import { createPublicClient, http, getContract } from 'viem';
 import { arbitrumSepolia } from 'viem/chains';
+import contractData from './contract.json';
 
-// Import the simple MVP contract ABI
-const SimpleBuyMeACoffeeArtifact = require('../../artifacts/contracts/SimpleBuyMeACoffee.sol/SimpleBuyMeACoffee.json');
-
-// Contract ABIs and addresses
-const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS || '0x4CAbc1d52830ad9e6d3773f05504a804c1152ed5';
-const CONTRACT_ABI = SimpleBuyMeACoffeeArtifact.abi;
+// Contract ABIs and addresses (sourced from versioned JSON committed to repo)
+const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS || (contractData as any).address;
+const CONTRACT_ABI = (contractData as any).abi;
 
 // Check if contract is deployed
 const isContractDeployed = () => {
