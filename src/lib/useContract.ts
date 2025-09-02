@@ -1,10 +1,16 @@
 import { useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
+import { arbitrum, arbitrumSepolia } from 'wagmi/chains';
 import contractConfig from './contract.json';
 import { securityAuditLog } from './security';
 
 // Contract configuration
 export const CONTRACT_ADDRESS = contractConfig.address as `0x${string}`;
 export const CONTRACT_ABI = contractConfig.abi;
+
+// Select active chain from environment (default to Arbitrum Sepolia for safety)
+const NETWORK = (process.env.NEXT_PUBLIC_NETWORK || 'arbitrumSepolia').toLowerCase();
+const ACTIVE_CHAIN = NETWORK === 'arbitrum' ? arbitrum : arbitrumSepolia;
+const ACTIVE_CHAIN_ID = ACTIVE_CHAIN.id;
 
 // Coffee struct type for TypeScript
 export interface Coffee {
@@ -32,6 +38,7 @@ export function useGetAllCoffees() {
     address: CONTRACT_ADDRESS,
     abi: CONTRACT_ABI,
     functionName: 'getAllCoffees',
+    chainId: ACTIVE_CHAIN_ID,
     query: {
       // Cache for 45 seconds, refetch every 30 seconds
       staleTime: 45 * 1000,
@@ -102,6 +109,7 @@ export function useBuyCoffee() {
         functionName: 'buyCoffee',
         args: [name, message],
         value,
+        chainId: ACTIVE_CHAIN_ID,
         // Add gas estimation buffer
         gas: undefined, // Let wagmi estimate
       });
@@ -144,6 +152,7 @@ export function useGetBalance() {
     address: CONTRACT_ADDRESS,
     abi: CONTRACT_ABI,
     functionName: 'getBalance',
+    chainId: ACTIVE_CHAIN_ID,
     query: {
       // Cache balance for 15 seconds, refetch every 10 seconds
       staleTime: 15 * 1000,
@@ -164,6 +173,7 @@ export function useGetRecentCoffees() {
     address: CONTRACT_ADDRESS,
     abi: CONTRACT_ABI,
     functionName: 'getRecentCoffees',
+    chainId: ACTIVE_CHAIN_ID,
     query: {
       // Cache recent coffees for 20 seconds, refetch every 15 seconds
       staleTime: 20 * 1000,
@@ -222,6 +232,7 @@ export function useRegisterCreator() {
         abi: CONTRACT_ABI,
         functionName: 'registerCreator',
         args: [username],
+        chainId: ACTIVE_CHAIN_ID,
       });
     } catch (error) {
       console.error('Error initiating creator registration:', error);
