@@ -2,9 +2,13 @@
 
 import { lazy, Suspense } from 'react';
 
-// Lazy load components for better performance
-const BuyCoffeeFormLazy = lazy(() => import('./BuyCoffeeForm'));
-const CoffeeListLazy = lazy(() => import('./CoffeeList'));
+// Lazy load components for better performance (map named exports to default)
+const BuyCoffeeFormLazy = lazy(() =>
+  import('./BuyCoffeeForm').then((m) => ({ default: m.BuyCoffeeForm }))
+);
+const CoffeeListLazy = lazy(() =>
+  import('./CoffeeList').then((m) => ({ default: m.CoffeeList }))
+);
 
 // Loading fallback components
 const FormLoadingFallback = () => (
