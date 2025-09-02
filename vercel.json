@@ -2,7 +2,7 @@
   "buildCommand": "npm run build:production",
   "outputDirectory": ".next",
   "framework": "nextjs",
-  "installCommand": "npm ci",
+  "installCommand": "npm ci --omit=dev",
   "devCommand": "npm run dev",
   "env": {
     "NODE_ENV": "production",
