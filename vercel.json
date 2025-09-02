@@ -14,9 +14,6 @@
       "NEXT_TELEMETRY_DISABLED": "1"
     }
   },
-  "functions": {
-    "runtime": "nodejs20.x"
-  },
   "headers": [
     {
       "source": "/:path*",
