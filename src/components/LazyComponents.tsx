@@ -3,8 +3,9 @@
 import { lazy, Suspense } from 'react';
 
 // Lazy load components for better performance (map named exports to default)
+// Note: The form component file is CoffeeForm.tsx
 const BuyCoffeeFormLazy = lazy(() =>
-  import('./BuyCoffeeForm').then((m) => ({ default: m.BuyCoffeeForm }))
+  import('./CoffeeForm').then((m) => ({ default: m.CoffeeForm }))
 );
 const CoffeeListLazy = lazy(() =>
   import('./CoffeeList').then((m) => ({ default: m.CoffeeList }))

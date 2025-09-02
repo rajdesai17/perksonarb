@@ -1,8 +1,4 @@
-import bundleAnalyzer from '@next/bundle-analyzer';
-
-const withBundleAnalyzer = bundleAnalyzer({
-  enabled: process.env.ANALYZE === 'true',
-});
+// Bundle analyzer is disabled in production builds on Vercel to avoid requiring devDependencies
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -157,4 +153,4 @@ const nextConfig = {
 
 };
 
-export default withBundleAnalyzer(nextConfig);
+export default nextConfig;
