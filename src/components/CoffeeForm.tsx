@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useAppSelector } from '../store/hooks';
 import { useBuyCoffee } from '../lib/useContract';
 import { ethers } from 'ethers';
@@ -14,7 +14,15 @@ export function CoffeeForm({ username }: CoffeeFormProps) {
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
   const [amount, setAmount] = useState('0.001');
-  const { buyCoffee, isPending, isConfirming, isConfirmed, error, reset } = useBuyCoffee();
+  const { buyCoffee, isPending, isConfirming, isConfirmed, error, reset, hash } = useBuyCoffee();
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  const explorerBase = useMemo(() => {
+    const network = (process.env.NEXT_PUBLIC_NETWORK || 'arbitrumSepolia').toLowerCase();
+    return network === 'arbitrum'
+      ? 'https://arbiscan.io/tx'
+      : 'https://sepolia.arbiscan.io/tx';
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,6 +43,20 @@ export function CoffeeForm({ username }: CoffeeFormProps) {
       console.error('Error buying coffee:', error);
     }
   };
+
+  // Show success state when confirmed
+  useEffect(() => {
+    if (isConfirmed) {
+      setShowSuccess(true);
+      // reset local form fields
+      setName('');
+      setMessage('');
+      setAmount('0.001');
+      // hide success after a short delay
+      const t = setTimeout(() => setShowSuccess(false), 5000);
+      return () => clearTimeout(t);
+    }
+  }, [isConfirmed]);
 
   if (!isConnected) {
     return (
@@ -60,6 +82,21 @@ export function CoffeeForm({ username }: CoffeeFormProps) {
       <h3 className="text-2xl font-bold text-gray-900 mb-6">
         Buy {username ? `@${username}` : 'Me'} a Coffee
       </h3>
+      {showSuccess && (
+        <div className="mb-4 rounded-lg border border-green-200 bg-green-50 p-4 text-sm text-green-700">
+          Coffee purchased successfully!
+          {hash && (
+            <a
+              href={`${explorerBase}/${hash}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ml-2 underline"
+            >
+              View transaction
+            </a>
+          )}
+        </div>
+      )}
       
       {!process.env.NEXT_PUBLIC_CONTRACT_ADDRESS && (
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
